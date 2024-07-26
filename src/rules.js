@@ -1,5 +1,5 @@
 export function isIngredientPoutineWithUppercase(hasPoutineIngredients, password) {
-    const ingredientsRegex = /(Fromage|Patate|Crème)/i;
+    const ingredientsRegex = /(Fromage|Patate|Crème|Tomme|Pomme de terre)/i;
     const matches = password.match(ingredientsRegex);
     const hasPoutineIngredientsWithUppercase = matches && matches.every(match => /[A-Z]/.test(match[0]));
     const meetsRequirementsPoutine = hasPoutineIngredients && hasPoutineIngredientsWithUppercase;
@@ -89,12 +89,12 @@ export const getTopTrack = async function () {
     return response.json()
 }
 
-export function compareToTopMusicChristopheMae(topMusic, userInput) {
-    const escapedMusicTitle = topMusic.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const regex = new RegExp(escapedMusicTitle, "i");
-    const isMatch = regex.test(userInput);
-    return isMatch;
-}
+// export function compareToTopMusicChristopheMae(topMusic, userInput) {
+//     const escapedMusicTitle = topMusic.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+//     const regex = new RegExp(escapedMusicTitle, "i");
+//     const isMatch = regex.test(userInput);
+//     return isMatch;
+// }
 
 
 export function victory() {

@@ -1,15 +1,15 @@
 <template>
 	<div class="password-game">
-		<h1>The Password Game 2.0</h1>
-		<p>Pour ceux qui n'ont pas réussi The Passeword Game, le vrai</p>
-		<input v-model="userInput" @input="handleInput" placeholder="Enter your guess">
+		<h1>UZIK GAME</h1>
+		<p>Si vous en avez marre de Pédantix...</p>
+		<input v-model="userInput" @input="handleInput" placeholder="Devinez le mot de passe">
 		<ErrorMessage v-if="userInput" :result="result" :isResolved="isResolved" />
 		<SuccesMessage v-for="resolvedMessage in newResolvedMessage" :key="resolvedMessage" :message="resolvedMessage" />
 	</div>
 	<div class="password-victory">
-		<h1 class="victory">VICTORY !</h1>
-		<img class="img-mont-royal" :src="require('@/assets/img/coucher-soleil_mont-royal.jpg')" />
-		<p>On se fait un sunset au Mont Royal pour fêter ça ?</p>
+		<h1 class="victory">VICTOIRE ! Vous avez trouvé le mot de passe</h1>
+		<img class="img-mont-royal" :src="require('@/assets/img/nina.png')" />
+		<p>Passez un bon été, on se retrouve en septembre !</p>
 		<button @click="replay()">Recommencer</button>
 	</div>
 </template>
@@ -17,9 +17,7 @@
 <script>
 import ErrorMessage from "./ErrorMessage.vue";
 import SuccesMessage from "./SuccesMessage.vue";
-import { isIngredientPoutineWithUppercase, getDate, checkOdsNumbersRule, getSunsetTime, compareRealSunsetTimeToUserInput, getTopTrack, compareToTopMusicChristopheMae, victory } from "@/rules";
-
-// let image = require('@/assets/img/coucher-soleil_mont-royal.jpg');
+import { isIngredientPoutineWithUppercase, getDate, checkOdsNumbersRule, getSunsetTime, getTopTrack, victory } from "@/rules";
 
 
 export default {
@@ -39,32 +37,32 @@ export default {
 			resolvedMessages: [],
 			musicToCheck: "",
 			rules: [
-
-				{ message: "Le mot de passe doit contenir l'heure du coucher du soleil à cet endroit : lat=45.504814179128, lng=-73.58723572207455, en UTC. (HH:MM) (heure en PM/AM)", test: password => compareRealSunsetTimeToUserInput(this.sunsetTime, password) },
 				{ message: "Le deuxième et l'avant-dernier chiffre du mot de passe doivent être impairs.", test: password => checkOdsNumbersRule(password) },
-				{ message: "Quel a été le jeu phare de l'agence ces deux derniers mois ?", test: password => /Trio|Crack list|Cracklist/.test(password) },
-				{ message: "Quel est le prénom du joueur de foot préféré de Flossie ?", test: password => /Griezmann|Antoine/.test(password) },
+				{ message: "Je suis arrivée le même jour que ? (Jeanne/Inès/Augustin/Daphné)", test: password => /ines|inès|Inès|Ines/i.test(password) },
+				{ message: "Compléter la phrase 'Solo pomodoro solo ...'", test: password => /mutti|Mutti/.test(password) },
+				{ message: "Quel a été le jeu phare de l'agence ces deux derniers mois ?", test: password => /Trio|trio|crack list|cracklist|Crack list|Cracklist/.test(password) },
 				{ message: "Le mot de passe doit contenir la date du jour. (JJ/MM/AAAA))", test: password => new RegExp(getDate()).test(password) },
+				{
+					message: "La somme des chiffres du mot de passe doit être égale à 40.", test: password => password
+						.split("") // Divise la chaîne en un tableau de caractères
+						.filter(char => /\d/.test(char)) // Filtre uniquement les chiffres
+						.reduce((acc, curr) => acc + parseInt(curr), 0) === 40
+				},
+				{ message: "Quel est le prénom du joueur de foot préféré de Flossie ?", test: password => /Griezmann|Antoine|griezmann|antoine/.test(password) },
+				{ message: "Le mot de passe doit contenir deux chiffres consécutifs.", test: password => /\d{2}/.test(password) },
+				{ message: "Qu'est-ce qu'il ne faut pas oublier le vendredi soir : allez boire l'apéro, prendre le train ou les pointages (mention spéciale à Fred)", test: password => /les pointages|lespointages|Lespointages|Les pointages|pointages|Pointages/i.test(password) },
+
+				{ message: "Le mot de passe doit contenir au moins un caractère spécial : !@#$%&?.", test: password => /[!@#$%&?]+/.test(password) },
 				{
 					message: "L'ingrédient de l'aligot s'écrit avec une majuscule ! On respecte l'aligot !",
 					test: password => {
-						const hasPoutineIngredients = /Fromage|Patate|Crème/i.test(password);
+						const hasPoutineIngredients = /Fromage|Patate|Crème|Tomme|Pomme de terre/i.test(password);
 						return isIngredientPoutineWithUppercase(hasPoutineIngredients, password);
 					}
 				},
-				{ message: "Le mot de passe doit contenir au moins un ingrédient de l'aligot", test: password => /fromage|patate|crème/i.test(password) },
-				{ message: "Le mot de passe doit contenir au moins un prenom de quelqu'un de l'agence", test: password => /Jessy|Kevin|Mélanie|Inès|Jordan|Lou|Clémentine|Manon|Flossie|Charlie|Hugo|Zuzanna|Emma|Camille|Daphné|Alix|Isaiah|Fred|Philippe|Youcef/.test(password) },
-				// {
-				// 	message: "La somme des chiffres du mot de passe doit être égale à 40.", test: password => password
-				// 		.split("") // Divise la chaîne en un tableau de caractères
-				// 		.filter(char => /\d/.test(char)) // Filtre uniquement les chiffres
-				// 		.reduce((acc, curr) => acc + parseInt(curr), 0) === 40
-				// },
-				{ message: "Le mot de passe doit commencer par la lettre majuscule. Une phrase commence toujours par une majuscule !", test: password => /^[A-Z]/.test(password) },
-				{ message: "Le mot de passe doit contenir le top 1 de l'artiste Christophe Maé sur Spotify", test: password => compareToTopMusicChristopheMae(this.musicToCheck, password) },
-				{ message: "Le mot de passe doit contenir deux chiffres consécutifs.", test: password => /\d{2}/.test(password) },
-				{ message: "Le mot de passe doit contenir au moins un caractère spécial : !@#$%&?.", test: password => /[!@#$%&?]+/.test(password) },
+				{ message: "Le mot de passe doit contenir au moins un ingrédient de l'aligot", test: password => /fromage|patate|crème|tomme|pomme de terre/i.test(password) },
 				{ message: "Le mot de passe doit contenir au moins un chiffre.", test: password => /\d/.test(password) },
+				{ message: "Le mot de passe doit commencer par la lettre majuscule. Une phrase commence toujours par une majuscule !", test: password => /^[A-Z]/.test(password) },
 				{ message: "Le mot de passe doit contenir au moins une lettre majuscule.", test: password => /[A-Z]/.test(password) },
 				{ message: "Le mot de passe doit avoir une longueur d'au moins 8 caractères.", test: password => password.length >= 8 },
 			],
@@ -178,7 +176,7 @@ input {
 }
 
 .img-mont-royal {
-	width: 50%;
+	width: 20%;
 	margin: 5% 0 2%;
 	height: auto;
 	border-radius: 15px;
