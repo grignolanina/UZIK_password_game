@@ -40,6 +40,7 @@ export default {
 				{ message: "Le deuxième et l'avant-dernier chiffre du mot de passe doivent être impairs.", test: password => checkOdsNumbersRule(password) },
 				{ message: "Je suis arrivée le même jour que ? (Jeanne/Inès/Augustin/Daphné)", test: password => /ines|inès|Inès|Ines/i.test(password) },
 				{ message: "Compléter la phrase 'Solo pomodoro solo ...'", test: password => /mutti|Mutti/.test(password) },
+				{ message: "Qui gère le Google Home (la musique) mieux que personne dans la team projet ?", test: password => /kevin|Kevin|Kévin|kévin/.test(password) },
 				{ message: "Quel a été le jeu phare de l'agence ces deux derniers mois ?", test: password => /Trio|trio|crack list|cracklist|Crack list|Cracklist/.test(password) },
 				{ message: "Le mot de passe doit contenir la date du jour. (JJ/MM/AAAA))", test: password => new RegExp(getDate()).test(password) },
 				{
