@@ -1,12 +1,12 @@
+// const { defineConfig } = require('@vue/cli-service')
+// module.exports = defineConfig({
+//   transpileDependencies: true
+// })
+
+
 const { defineConfig } = require('@vue/cli-service');
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: '/', // Définir le chemin de base pour le déploiement
-  configureWebpack: {
-    // Optionnel : Configurations supplémentaires si nécessaire
-  },
-  devServer: {
-    // Optionnel : Configurations du serveur de développement
-  }
+  publicPath: '/', // Chemin de base pour le déploiement
 });
